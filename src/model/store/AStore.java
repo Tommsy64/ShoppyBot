@@ -1,6 +1,8 @@
 package model.store;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import model.product.Product;
@@ -46,6 +48,16 @@ public abstract class AStore implements IStore {
       int maxToBuy);
 
   /**
+   * Returns a list of products sold at this store.
+   *
+   * @return the list of products sold
+   */
+  @Override
+  public List<Product> getSoldProducts() {
+    return new ArrayList<>(this.productLibrary.keySet());
+  }
+
+  /**
    * Returns {@code true} if the product is in stock.
    *
    * @param product the product to check
@@ -85,25 +97,6 @@ public abstract class AStore implements IStore {
   }
 
   /**
-   * Purchases 1 of the given product.
-   *
-   * @param product the product to purchase
-   * @param driver
-   * @throws IllegalStateException    thrown when the product is out of stock or something
-   *                                  unexpected happened.
-   * @throws IllegalArgumentException thrown when the given product is not offered by the store
-   */
-  @Override
-  public void purchaseProduct(Product product, ChromeDriver driver)
-      throws IllegalStateException, IllegalArgumentException {
-    if (!this.isInStock(product, driver)) {
-      throw new IllegalStateException("The product was not in stock.");
-    }
-    this.purchaseCurrentProduct(driver, new AtomicInteger(0), 1);
-  }
-
-  @Override
-  /**
    * Purchases the given product if the total bought so far is less than the max number to buy.
    *
    * @param product     the product to purchase
@@ -113,19 +106,43 @@ public abstract class AStore implements IStore {
    * @throws IllegalStateException    thrown when something unexpected happened.
    * @throws IllegalArgumentException thrown when the given product is not offered by the store
    */
+  @Override
   public void purchaseProduct(Product product, ChromeDriver driver, AtomicInteger boughtSoFar,
       int maxToBuy)
       throws IllegalStateException, IllegalArgumentException {
     if (this.canStillBuy(boughtSoFar, maxToBuy)) {
       try {
+        this.verifyProductIsInStock(product, driver);
         this.purchaseCurrentProduct(driver, boughtSoFar, maxToBuy);
         System.out.println("The " + product.toString() + " was successfully purchased!");
+
+        // try to buy another after buying one
+        // TODO -- instead of doing this, we'd just select the quantity when doing checkout
+        this.purchaseProduct(product, driver, boughtSoFar, maxToBuy);
       } catch (IllegalStateException e) {
-        if (e.getMessage().equals("The product was not in stock.")) {
+        if (e.getMessage().equals("The " + product.toString() + " was not in stock.")) {
           System.out.println("The " + product.toString() + " was out of stock...Retrying!");
           this.purchaseProduct(product, driver, boughtSoFar, maxToBuy);
+        } else {
+          System.out.println(e.getMessage());
+          throw e;
         }
       }
+    } else {
+      driver.close();
+    }
+  }
+
+  /**
+   * Verifies the given product is in stock.
+   *
+   * @param product the product
+   * @param driver  the chrome driver
+   * @throws IllegalStateException when the product was not in stock
+   */
+  private void verifyProductIsInStock(Product product, ChromeDriver driver) {
+    if (!this.isInStock(product, driver)) {
+      throw new IllegalStateException("The " + product.toString() + " was not in stock.");
     }
   }
 

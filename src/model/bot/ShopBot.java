@@ -7,7 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 /**
- * Represents a bot that tries to purchase a given product.
+ * Represents a bot that tries to purchase a given product from a given store.
  */
 public class ShopBot implements Runnable {
 
@@ -52,7 +52,8 @@ public class ShopBot implements Runnable {
 
   /**
    * Convenience constructor that initializes a {@code ShopBot} with a specific id and a reference
-   * to the amount bought so far as well as the max amount of products to buy.
+   * to the amount bought so far as well as the max amount of products to buy. Defaults to headless
+   * mode.
    *
    * @param product     the product to purchase
    * @param store       the store to purchase the product from
@@ -85,20 +86,6 @@ public class ShopBot implements Runnable {
     this.headless = headless;
   }
 
-  /**
-   * Initializes the a headless chrome driver.
-   */
-  private void initDriver() {
-    if (this.headless) {
-      ChromeOptions options = new ChromeOptions();
-      options.addArguments("--headless", "--disable-gpu", "--window-size=1920,1200",
-          "--ignore-certificate-errors");
-      this.driver = new ChromeDriver(options);
-    } else {
-      this.driver = new ChromeDriver();
-    }
-  }
-
   @Override
   public void run() {
     this.initDriver();
@@ -107,6 +94,20 @@ public class ShopBot implements Runnable {
       this.store.purchaseProduct(product, this.driver, this.boughtSoFar, this.maxToBuy);
     } catch (IllegalStateException e) {
       System.out.println(e.getMessage());
+    }
+  }
+
+  /**
+   * Initializes the chrome driver.
+   */
+  private void initDriver() {
+    if (this.headless) {
+      ChromeOptions options = new ChromeOptions();
+      options.addArguments("--headless", "--disable-gpu", "--window-size=500,500",
+          "--ignore-certificate-errors");
+      this.driver = new ChromeDriver(options);
+    } else {
+      this.driver = new ChromeDriver();
     }
   }
 }
