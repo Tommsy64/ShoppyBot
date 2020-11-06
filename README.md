@@ -2,7 +2,6 @@
 A bot that purchases items for you!
 
 ## Getting Started
-
 1. Download the latest chrome driver [here](https://chromedriver.chromium.org/)
 
 1.0. You can either add the chrome driver and chrome.exe to your PATH or just pass in both of their paths as arguments when constructing a new `ChromeDriver`
