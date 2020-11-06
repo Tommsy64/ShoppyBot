@@ -7,13 +7,13 @@ import org.openqa.selenium.chrome.ChromeDriver;
 /**
  * Represents the online store 'BestBuy'.
  */
-public class BestBuy extends AStore {
+public class Amazon extends AStore {
 
   /**
    * Default constructor that initializes the xPathToStore.
    */
-  public BestBuy() {
-    super("//*[contains(@id,'fulfillment-add-to-cart-button')]");
+  public Amazon() {
+    super("//input[@id='add-to-cart-button']/.././span");
   }
 
   /**
@@ -22,9 +22,9 @@ public class BestBuy extends AStore {
   @Override
   protected void fillProductLibrary() {
     this.productLibrary
-        .put(Product.NVIDIA_GEFORCE_RTX3080, "https://www.bestbuy.com/site/nvidia-geforce-rtx-3080"
-            + "-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440"
-            + ".p?skuId=6429440");
+        .put(Product.FIRE_TV_STICK,
+            "https://www.amazon.com/Fire-TV-Stick-4K-with-Alexa-Voice-Remote/dp/B079QHML21/ref"
+                + "=zg_bs_electronics_home_2?_encoding=UTF8&psc=1&refRID=WTDFTB95DGRPXVDVG400");
   }
 
   /**

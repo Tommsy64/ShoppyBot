@@ -7,13 +7,13 @@ import org.openqa.selenium.chrome.ChromeDriver;
 /**
  * Represents the online store 'BestBuy'.
  */
-public class BestBuy extends AStore {
+public class NewEgg extends AStore {
 
   /**
    * Default constructor that initializes the xPathToStore.
    */
-  public BestBuy() {
-    super("//*[contains(@id,'fulfillment-add-to-cart-button')]");
+  public NewEgg() {
+    super("//button[contains(text(),'Add to cart') and contains(@class,'btn-wide')]");
   }
 
   /**
@@ -21,10 +21,20 @@ public class BestBuy extends AStore {
    */
   @Override
   protected void fillProductLibrary() {
-    this.productLibrary
-        .put(Product.NVIDIA_GEFORCE_RTX3080, "https://www.bestbuy.com/site/nvidia-geforce-rtx-3080"
-            + "-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440"
-            + ".p?skuId=6429440");
+    this.productLibrary.put(Product.NVIDIA_GEFORCE_RTX3080,
+        "https://www.newegg.com/asus-geforce-rtx-3080-tuf-rtx3080-10g-gaming/p/N82E16814126453"
+            + "?cm_mmc=vendor-nvidia");
+
+    this.productLibrary.put(Product.ASUS_TUF_RTX3080,
+        "https://www.newegg.com/asus-geforce-rtx-3080-tuf-rtx3080-10g-gaming/p/N82E16814126453"
+            + "?cm_mmc=vendor-nvidia");
+
+    this.productLibrary.put(Product.ZOTAC_GEFORCE_RTX3080, "https://www.newegg"
+        + ".com/zotac-geforce-rtx-3080-zt-a30800d-10p/p/N82E16814500502?cm_mmc=vendor-nvidia");
+
+    this.productLibrary.put(Product.MSI_GEFORCE_RTX3080,
+        "https://www.newegg.com/msi-geforce-rtx-3080-rtx-3080-ventus-3x-10g/p/N82E16814137600"
+            + "?cm_mmc=vendor-nvidia");
   }
 
   /**
