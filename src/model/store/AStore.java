@@ -2,7 +2,9 @@ package model.store;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 import model.product.Product;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -33,9 +35,15 @@ public abstract class AStore implements IStore {
   protected abstract void fillProductLibrary();
 
   /**
-   * Purchases the product that this store is currently viewing.
+   * Purchases the product that this store is currently viewing if the number of products bougth so
+   * far is less than the max.
+   *
+   * @param driver      the chrome driver
+   * @param boughtSoFar how many have been bought so far
+   * @param maxToBuy    the max number of products to buy
    */
-  protected abstract void purchaseCurrentProduct();
+  protected abstract void purchaseCurrentProduct(ChromeDriver driver, AtomicInteger boughtSoFar,
+      int maxToBuy);
 
   /**
    * Returns {@code true} if the product is in stock.
@@ -56,7 +64,14 @@ public abstract class AStore implements IStore {
     }
 
     driver.get(productUrl);
-    WebElement checkoutButton = driver.findElementByXPath(this.xPathToCheckout);
+    WebElement checkoutButton;
+
+    try {
+      checkoutButton = driver.findElementByXPath(this.xPathToCheckout);
+    } catch (NoSuchElementException e) {
+      return false;
+    }
+
     String innerText = checkoutButton.getAttribute("innerText").toLowerCase();
     if (innerText.contains("sold out") || innerText.contains("notify") || innerText.contains(
         "notification")) {
@@ -70,7 +85,7 @@ public abstract class AStore implements IStore {
   }
 
   /**
-   * Purchases the given product.
+   * Purchases 1 of the given product.
    *
    * @param product the product to purchase
    * @param driver
@@ -84,6 +99,45 @@ public abstract class AStore implements IStore {
     if (!this.isInStock(product, driver)) {
       throw new IllegalStateException("The product was not in stock.");
     }
-    this.purchaseCurrentProduct();
+    this.purchaseCurrentProduct(driver, new AtomicInteger(0), 1);
+  }
+
+  @Override
+  /**
+   * Purchases the given product if the total bought so far is less than the max number to buy.
+   *
+   * @param product     the product to purchase
+   * @param driver      the chrome driver
+   * @param boughtSoFar how many products have been bought so far
+   * @param maxToBuy    the max number of products to buy
+   * @throws IllegalStateException    thrown when something unexpected happened.
+   * @throws IllegalArgumentException thrown when the given product is not offered by the store
+   */
+  public void purchaseProduct(Product product, ChromeDriver driver, AtomicInteger boughtSoFar,
+      int maxToBuy)
+      throws IllegalStateException, IllegalArgumentException {
+    if (this.canStillBuy(boughtSoFar, maxToBuy)) {
+      try {
+        this.purchaseCurrentProduct(driver, boughtSoFar, maxToBuy);
+        System.out.println("The " + product.toString() + " was successfully purchased!");
+      } catch (IllegalStateException e) {
+        if (e.getMessage().equals("The product was not in stock.")) {
+          System.out.println("The " + product.toString() + " was out of stock...Retrying!");
+          this.purchaseProduct(product, driver, boughtSoFar, maxToBuy);
+        }
+      }
+    }
+  }
+
+  /**
+   * Is the number of products bought so far less than the max?
+   *
+   * @param boughtSoFar total bought so far
+   * @param maxToBuy    max to buy
+   * @return {@code true} if bought so far is less than the max
+   */
+  protected boolean canStillBuy(AtomicInteger boughtSoFar,
+      int maxToBuy) {
+    return boughtSoFar.get() < maxToBuy;
   }
 }

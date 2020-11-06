@@ -1,5 +1,6 @@
 package model.store;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import model.product.Product;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -21,14 +22,29 @@ public interface IStore {
       throws IllegalStateException, IllegalArgumentException;
 
   /**
-   * Purchases the given product.
+   * Purchases 1 of the given product.
    *
    * @param product the product to purchase
+   * @param driver  the chrome driver
    * @throws IllegalStateException    thrown when the product is out of stock or something
    *                                  unexpected happened.
    * @throws IllegalArgumentException thrown when the given product is not offered by the store
    */
   void purchaseProduct(Product product, ChromeDriver driver)
+      throws IllegalStateException, IllegalArgumentException;
+
+  /**
+   * Purchases the given product if the total bought so far is less than the max number to buy.
+   *
+   * @param product     the product to purchase
+   * @param driver      the chrome driver
+   * @param boughtSoFar how many products have been bought so far
+   * @param maxToBuy    the max number of products to buy
+   * @throws IllegalStateException    thrown when something unexpected happened.
+   * @throws IllegalArgumentException thrown when the given product is not offered by the store
+   */
+  void purchaseProduct(Product product, ChromeDriver driver, AtomicInteger boughtSoFar,
+      int maxToBuy)
       throws IllegalStateException, IllegalArgumentException;
 
 }
