@@ -19,10 +19,12 @@ public class Product {
   private AtomicInteger purchased;
 
   /**
-   * Constructs a product of given name and desired quantity.
+   * Constructs a product of given name and desired quantity. The url is optional, and it's a direct
+   * link to the product's store page.
    *
    * @param name     the name of the product
    * @param quantity the quantity of the product
+   * @param url      the url to the product's store page
    */
   public Product(String name, int quantity, String url) {
     if (name == null) {

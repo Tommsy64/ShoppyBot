@@ -1,9 +1,14 @@
 package model.store;
 
 import java.io.IOException;
+import java.util.List;
 import model.product.Product;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Represents the online store 'BestBuy'.
@@ -26,6 +31,32 @@ public class NewEgg extends AStore {
    */
   @Override
   protected void selectProductFromSearchResults(Product product, ChromeDriver driver) {
+    List<WebElement> results = driver.findElements(
+        By.xpath("//div[contains(@class,'item-cell')]/div[contains(@class,'item-container')]"));
+
+    for (WebElement result : results) {
+      if (this.resultIsProduct(result, product)) {
+        this.clickOnSearchResult(driver, result);
+        return;
+      }
+    }
+
+    System.out.println(String.format("Couldn't find '%s'...", product.name));
+    System.out.println("Trying again...");
+    this.searchForProduct(product, driver);
+
+  }
+
+
+  /**
+   * Clicks on a searh result to go to its product page
+   *
+   * @param result the search result
+   */
+  private void clickOnSearchResult(WebDriver driver, WebElement result) {
+    WebElement title = result.findElement(By.tagName("a"));
+    String href = title.getAttribute("href");
+    driver.get(href);
   }
 
   /**
@@ -44,33 +75,17 @@ public class NewEgg extends AStore {
    */
   @Override
   public void login(ChromeDriver driver) throws IOException {
-    // TODO -- finish this...
     System.out.println("Logging into newegg...");
 
     driver
         .get(
             "https://www.newegg.com/");
 
-    String[] credentials = this.getCredentials();
-
-    driver.findElementByXPath("/html/body/div[9]/header/div[1]/div[4]/div[1]/div[1]").click();
-
-    WebElement emailInput = driver
-        .findElementByXPath(
-            "/html/body/div[5]/div/div[2]/div/div/div[1]/form/div/div[1]/div/input");
-    emailInput.sendKeys(credentials[0]);
-
-    driver.findElementByXPath("/html/body/div[5]/div/div[2]/div/div/div[1]/form/div/div[3]")
-        .click();
-
-    driver
-        .findElementByXPath("/html/body/div[5]/div/div[2]/div/div/div[2]/form/div/div[2]/div/input")
-        .sendKeys(credentials[1]);
-
-    driver.findElementByXPath("/html/body/div[5]/div/div[2]/div/div/div[2]/form/div/div[3]/button")
-        .click();
+    WebDriverWait wait = new WebDriverWait(driver, 1800);
+    wait.until(ExpectedConditions.urlContains("NewMyAccount"));
 
     System.out.println("Logged into newegg.");
+
   }
 
   /**

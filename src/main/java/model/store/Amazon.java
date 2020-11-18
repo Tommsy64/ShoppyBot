@@ -2,13 +2,14 @@ package model.store;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import model.product.Product;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
  * Represents the online store 'BestBuy'.
@@ -41,25 +42,8 @@ public class Amazon extends AStore {
       }
     }
 
-    try {
-      System.out.println(String.format("Couldn't find '%s'...", product.name));
-      TimeUnit.MILLISECONDS.sleep(250);
-      System.out.println("Trying again...");
-      this.searchForProduct(product, driver);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private boolean resultIsProduct(WebElement result, Product product) {
-    String innerText = result.getAttribute("innerText");
-
-    for (String word : product.name.split(" ")) {
-      if (!innerText.contains(word)) {
-        return false;
-      }
-    }
-    return true;
+    System.out.println(String.format("Couldn't find '%s'... Trying again...", product.name));
+    this.searchForProduct(product, driver);
   }
 
 
@@ -126,14 +110,8 @@ public class Amazon extends AStore {
     driver.findElementByXPath("/html/body/div[1]/div[1]/div[2]/div/div[2]/div/div/div/form/div"
         + "/div[2]/span/span/input").click();
 
-//    WebDriverWait wait = new WebDriverWait(driver, 30);
-//    wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-logo")));
-
-    try {
-      TimeUnit.SECONDS.sleep(1);
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+    WebDriverWait wait = new WebDriverWait(driver, 30);
+    wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-logo")));
 
     System.out.println("Logged into amazon.");
   }

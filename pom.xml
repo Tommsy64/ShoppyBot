@@ -8,8 +8,8 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-          <source>7</source>
-          <target>7</target>
+          <source>15</source>
+          <target>15</target>
         </configuration>
         <groupId>org.apache.maven.plugins</groupId>
       </plugin>

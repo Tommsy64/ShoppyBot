@@ -116,6 +116,17 @@ public abstract class AStore implements IStore {
   protected abstract void selectProductFromSearchResults(Product product, ChromeDriver driver);
 
 
+  protected boolean resultIsProduct(WebElement result, Product product) {
+    String innerText = result.getAttribute("innerText");
+
+    for (String word : product.name.split(" ")) {
+      if (!innerText.contains(word)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   /**
    * Does the checkout button say 'Add to cart' on it?
    *

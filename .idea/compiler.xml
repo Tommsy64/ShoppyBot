@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="ShoppyBot" target="7" />
+      <module name="ShoppyBot" target="15" />
     </bytecodeTargetLevel>
   </component>
 </project>
