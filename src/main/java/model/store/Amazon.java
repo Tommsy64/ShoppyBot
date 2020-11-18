@@ -41,10 +41,10 @@ public class Amazon extends AStore {
       }
     }
 
-    // didn't find it so let's try again...
     try {
-      TimeUnit.SECONDS.sleep(1);
-      System.out.println("Didn't find the product...trying again...");
+      System.out.println(String.format("Couldn't find '%s'...", product.name));
+      TimeUnit.MILLISECONDS.sleep(250);
+      System.out.println("Trying again...");
       this.searchForProduct(product, driver);
     } catch (InterruptedException e) {
       e.printStackTrace();
@@ -128,6 +128,12 @@ public class Amazon extends AStore {
 
 //    WebDriverWait wait = new WebDriverWait(driver, 30);
 //    wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-logo")));
+
+    try {
+      TimeUnit.SECONDS.sleep(1);
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
 
     System.out.println("Logged into amazon.");
   }

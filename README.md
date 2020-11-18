@@ -13,3 +13,11 @@ A bot that purchases items for you!
 
 ### Arguments
 `-name NAME_OF_PRODUCT(STRING) -quantity QUANTITY(INT,DEFAULT=1) -url URL_TO_PRODUCT(STRING, OPTIONAL)`
+
+### Credentials
+You must have a file called credentials.txt at the root of the project. The format is as follows:
+
+    amazon_username:USERNAME_HERE
+    amazon_password:PASSWORD_HERE
+    newegg_username:USERNAME_HERE
+    newegg_password:PASSWORD_HERE
