@@ -1,9 +1,9 @@
+import io.github.lennyparisineu.shoppybot.product.Product;
+import io.github.lennyparisineu.shoppybot.store.Amazon;
+import io.github.lennyparisineu.shoppybot.store.IStore;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import model.product.Product;
-import model.store.Amazon;
-import model.store.IStore;
 
 public class Main {
 

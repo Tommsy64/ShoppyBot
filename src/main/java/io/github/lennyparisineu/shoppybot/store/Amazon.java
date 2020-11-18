@@ -1,8 +1,8 @@
-package model.store;
+package io.github.lennyparisineu.shoppybot.store;
 
+import io.github.lennyparisineu.shoppybot.product.Product;
 import java.io.IOException;
 import java.util.List;
-import model.product.Product;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;

@@ -1,12 +1,12 @@
-package model.store;
+package io.github.lennyparisineu.shoppybot.store;
 
+import io.github.lennyparisineu.shoppybot.product.Product;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import model.product.Product;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 

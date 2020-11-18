@@ -1,11 +1,11 @@
-package model.product;
+package io.github.lennyparisineu.shoppybot.product;
 
+import io.github.lennyparisineu.shoppybot.bot.ShoppyBot;
+import io.github.lennyparisineu.shoppybot.store.IStore;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import model.shoppybot.ShoppyBot;
-import model.store.IStore;
 
 /**
  * Represents a product that the user wants to purchase.

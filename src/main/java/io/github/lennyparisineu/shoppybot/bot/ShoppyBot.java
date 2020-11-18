@@ -1,8 +1,8 @@
-package model.shoppybot;
+package io.github.lennyparisineu.shoppybot.bot;
 
+import io.github.lennyparisineu.shoppybot.product.Product;
+import io.github.lennyparisineu.shoppybot.store.IStore;
 import java.io.IOException;
-import model.product.Product;
-import model.store.IStore;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
