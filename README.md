@@ -9,4 +9,7 @@ A bot that purchases items for you!
 	- (Optional) Move the chrome driver where ever you'd like and add it to your PATH environment variable
 	- (Optional) Add the path to your chrome.exe to your PATH environment variable
 2. Add all of the .jar files in the lib directory to your project's dependencies 
-3. Run main and ensure chromium starts up, goes to an online store, and console prints out whether or not a product is in stock
+3. Add run configuration to use the Main class and pass in command line arguments
+
+### Arguments
+`-name NAME_OF_PRODUCT(STRING) -quantity QUANTITY(INT,DEFAULT=1) -url URL_TO_PRODUCT(STRING, OPTIONAL)`
